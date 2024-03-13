@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tic Tac Toe</title>
+<style>
+    /* CSS styles for the Tic Tac Toe game */
+
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    /* Container styles */
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* Center the board vertically */
+    }
+
+    /* Board styles */
+    .board {
+        display: grid;
+        grid-template-columns: repeat(3, 100px); 
+        grid-gap: 5px; /* Gap between cells */
+    }
+
+    /* Cell styles */
+    .cell {
+        width: 100px;
+        height: 100px;
+        border: 1px solid #ccc; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 36px; /* Size of the X and O */
+        cursor: pointer; /* Cursor changes to pointer on hover */
+    }
+
+    /* Hover effect for cells */
+    .cell:hover {
+        background-color: #f0f0f0; /* Light gray background color on hover */
+    }
+</style>
+</head>
+<body>
+
+
+<div class="container">
+    <!-- Game board -->
+    <div class="board" onclick="handleClick(event)">
+        <!-- Cells for the Tic Tac Toe grid -->
+        <div class="cell" data-index="0"></div>
+        <div class="cell" data-index="1"></div>
+        <div class="cell" data-index="2"></div>
+        <div class="cell" data-index="3"></div>
+        <div class="cell" data-index="4"></div>
+        <div class="cell" data-index="5"></div>
+        <div class="cell" data-index="6"></div>
+        <div class="cell" data-index="7"></div>
+        <div class="cell" data-index="8"></div>
+    </div>
+</div>
+
+<script>
+    // Variables to track game state
+    let currentPlayer = 'X';
+    let board = ['', '', '', '', '', '', '', '', ''];
+    let gameEnded = false;
+
+    // Function to handle clicks on cells
+    function handleClick(event) {
+        if (gameEnded) return; // If game has ended, do nothing
+
+        const cell = event.target;
+        const index = parseInt(cell.getAttribute('data-index'));
+
+        // If the cell is empty
+        if (board[index] === '') {
+            board[index] = currentPlayer; 
+            cell.textContent = currentPlayer; 
+
+            // Check for win or draw
+            if (checkWin()) {
+                gameEnded = true; // Game ends
+                alert(`${currentPlayer} wins!`); // Display winner alert
+            } else if (board.every(cell => cell !== '')) {
+                gameEnded = true; // Game ends
+                alert("It's a draw!"); // Display draw alert
+            } else {
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X'; // Switch players
+            }
+        }
+    }
+
+    // Function to check for win conditions
+    function checkWin() {
+        // Array of winning conditions
+        const Conditions = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+        ];
+
+        // Check each winning condition
+        return Conditions.some(condition => {
+            const [a, b, c] = condition;
+            return board[a] && board[a] === board[b] && board[a] === board[c];
+        });
+    }
+</script>
+
+</body>
+</html>
